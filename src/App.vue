@@ -100,7 +100,7 @@ export default defineComponent({
           console.error(err);
       }
     };*/
-
+    
     async function getAllPokemon()
     {
           let response = await axios.get<basicPokemon[]>('https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon');
@@ -109,7 +109,10 @@ export default defineComponent({
         }
     getAllPokemon()
           //.then(data => console.log(data.data[0]));
-          .then(data => items.value.push(data.data[0]));
+          //.then(data => items.value.push(data.data[0]));
+          .then(data => data.data.forEach(function(pok: basicPokemon){
+            items.value.push(pok);
+          }));
     
       
 /*
@@ -131,19 +134,20 @@ export default defineComponent({
       data: getAllPokemon(),
     }*/
  
-   
-    const pushData = () => {
+   // Todo, scroll at 
+   /* const pushData = () => {
       const max = items.value.length + 20;
       const min = max - 20;
       for (let i = min; i < max; i++) {
         //console.log(poks[i]);
        items.value.push(i);
       }
-    }
+    }*/
     
     const loadData = (ev: InfiniteScrollCustomEvent) => {
       setTimeout(() => {
-        pushData();
+        //Todo
+        //pushData();
         console.log('Loaded data');
         ev.target.complete();
   
