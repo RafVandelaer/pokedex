@@ -40,7 +40,7 @@ import { useRoute } from 'vue-router';
 import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp, funnelOutline, funnelSharp, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 
 
-
+import axios from 'axios';
 
 export default defineComponent({
   name: 'App',
@@ -61,6 +61,8 @@ export default defineComponent({
     IonSplitPane,
   },
   setup() {
+    
+
     const selectedIndex = ref(0);
     const appPages = [
       {
@@ -108,6 +110,17 @@ export default defineComponent({
     }
     
     const route = useRoute();
+
+    const getAllPokemon = async () => {
+      try {
+          const resp = await axios.get('https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon');
+          console.log(resp.data);
+      } catch (err) {
+          // ToDo -> errors 
+          console.error(err);
+      }
+    };
+    getAllPokemon();
     
     return { 
       selectedIndex,
