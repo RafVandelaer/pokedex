@@ -19,8 +19,8 @@
           </ion-list>
   
           <ion-list>
-          <ion-item v-for="item in items" :key="item.name">
-            <ion-label>{{ item.name }}</ion-label>
+          <ion-item v-for="item in items" :key="item.id">
+            <ion-label>{{ item }}</ion-label>
           </ion-item>
         </ion-list>
           
@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane, IonSearchbar, IonInfiniteScroll, IonInfiniteScrollContent, InfiniteScrollCustomEvent } from '@ionic/vue';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp, funnelOutline, funnelSharp, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 
@@ -90,7 +90,7 @@ export default defineComponent({
 
   
     //https://bobbyhadz.com/blog/typescript-http-request-axios
-    const getAllPokemon = async () => {
+    /*const getAllPokemon = async () => {
       try {
         const { data, status } = await axios.get<GetUsersResponse[]>('https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon');
             console.log(data[0]);
@@ -99,7 +99,19 @@ export default defineComponent({
           // ToDo -> errors 
           console.error(err);
       }
-    };
+    };*/
+
+    async function getAllPokemon()
+    {
+          let response = await axios.get<basicPokemon[]>('https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon');
+          let data = await response
+          return data;
+        }
+    getAllPokemon()
+          //.then(data => console.log(data.data[0]));
+          .then(data => items.value.push(data.data[0]));
+    
+      
 /*
     function getAllPokemon(): GetUsersResponse[] {
      //todo try catch
@@ -113,8 +125,8 @@ export default defineComponent({
     
  
 
-    const items = ref<number[]>([]);
-   const it = getAllPokemon();
+    const items = ref<basicPokemon[]>([]);
+  // const it: GetUsersResponse[] = getAllPokemon();
    /* const items: GetUsersResponse = {
       data: getAllPokemon(),
     }*/
@@ -124,7 +136,8 @@ export default defineComponent({
       const max = items.value.length + 20;
       const min = max - 20;
       for (let i = min; i < max; i++) {
-        items.value.push(i);
+        //console.log(poks[i]);
+       items.value.push(i);
       }
     }
     
@@ -220,7 +233,8 @@ export default defineComponent({
       items,
       isSelected: (url: string) => url === route.path ? 'selected' : ''
     }
-  }
+  },
+
 })
 
 </script>
