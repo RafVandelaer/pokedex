@@ -18,14 +18,23 @@
             </ion-menu-toggle>
           </ion-list>
   
-          <ion-list id="labels-list">
-            <ion-list-header>Labels</ion-list-header>
-  
-            <ion-item v-for="(label, index) in labels" lines="none" :key="index">
-              <ion-icon slot="start" :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>
-              <ion-label>{{ label }}</ion-label>           
-            </ion-item>
-          </ion-list>
+          <ion-list>
+          <ion-item v-for="item in items" :key="item.name">
+            <ion-label>{{ item.name }}</ion-label>
+          </ion-item>
+        </ion-list>
+          
+            <ion-infinite-scroll
+              @ionInfinite="loadData($event)" 
+              threshold="100px" 
+              id="infinite-scroll"
+              :disabled="isDisabled"
+            >
+              <ion-infinite-scroll-content
+                loading-spinner="bubbles"
+                loading-text="Loading more data...">
+              </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
         </ion-content>
       </ion-menu>
       <ion-router-outlet id="main-content"></ion-router-outlet>
@@ -34,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane, IonSearchbar } from '@ionic/vue';
+import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane, IonSearchbar, IonInfiniteScroll, IonInfiniteScrollContent, InfiniteScrollCustomEvent } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp, funnelOutline, funnelSharp, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
@@ -61,6 +70,79 @@ export default defineComponent({
     IonSplitPane,
   },
   setup() {
+
+    //infinit scroll
+    const isDisabled = ref(false);
+    const toggleInfiniteScroll = () => {
+      isDisabled.value = !isDisabled.value;
+    }
+
+    
+    interface basicPokemon {
+        id: number;
+        name: string;
+        sprint: URL;
+        types: Array<any>;
+      }
+      type GetUsersResponse = {
+        data: basicPokemon[];
+      };
+
+  
+    //https://bobbyhadz.com/blog/typescript-http-request-axios
+    const getAllPokemon = async () => {
+      try {
+        const { data, status } = await axios.get<GetUsersResponse[]>('https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon');
+            console.log(data[0]);
+          return data;
+      } catch (err) {
+          // ToDo -> errors 
+          console.error(err);
+      }
+    };
+/*
+    function getAllPokemon(): GetUsersResponse[] {
+     //todo try catch
+  
+       const data = axios.get<GetUsersResponse[]>('https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon');
+       return data;
+     
+
+    }*/
+ 
+    
+ 
+
+    const items = ref<number[]>([]);
+   const it = getAllPokemon();
+   /* const items: GetUsersResponse = {
+      data: getAllPokemon(),
+    }*/
+ 
+   
+    const pushData = () => {
+      const max = items.value.length + 20;
+      const min = max - 20;
+      for (let i = min; i < max; i++) {
+        items.value.push(i);
+      }
+    }
+    
+    const loadData = (ev: InfiniteScrollCustomEvent) => {
+      setTimeout(() => {
+        pushData();
+        console.log('Loaded data');
+        ev.target.complete();
+  
+        // App logic to determine if all data is loaded
+        // and disable the infinite scroll
+        if (items.value.length === 1000) {
+          ev.target.disabled = true;
+        }
+      }, 500);
+    }
+    
+    pushData();
     
 
     const selectedIndex = ref(0);
@@ -110,17 +192,9 @@ export default defineComponent({
     }
     
     const route = useRoute();
+   
 
-    const getAllPokemon = async () => {
-      try {
-          const resp = await axios.get('https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon');
-          console.log(resp.data);
-      } catch (err) {
-          // ToDo -> errors 
-          console.error(err);
-      }
-    };
-    getAllPokemon();
+
     
     return { 
       selectedIndex,
@@ -140,10 +214,15 @@ export default defineComponent({
       trashSharp, 
       warningOutline, 
       warningSharp,
+      isDisabled,
+      toggleInfiniteScroll,
+      loadData,
+      items,
       isSelected: (url: string) => url === route.path ? 'selected' : ''
     }
   }
-});
+})
+
 </script>
 
 <style scoped>

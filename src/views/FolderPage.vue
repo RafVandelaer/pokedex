@@ -10,16 +10,25 @@
     </ion-header>
     
     <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">{{ $route.params.id }}</ion-title>
-        </ion-toolbar>
-      </ion-header>
+      
     
       <div id="container">
         <strong class="capitalize">{{ $route.params.id }}</strong>
         <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
       </div>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>Image</ion-col>
+          <ion-col><ion-list>
+            <ion-item>
+                <ion-label>Pokemon list</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+          
+        </ion-row>
+      </ion-grid>
     </ion-content>
   </ion-page>
 </template>
