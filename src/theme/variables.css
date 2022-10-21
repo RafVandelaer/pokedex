@@ -234,3 +234,12 @@ http://ionicframework.com/docs/theming/ */
     --ion-card-background: #1e1e1e;
   }
 }
+#background-content{
+  background-color: #ddd;
+}
+.caps{
+  text-transform: capitalize;
+}
+.ion-badge{
+  margin: 0;
+}

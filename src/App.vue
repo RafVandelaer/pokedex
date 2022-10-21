@@ -2,7 +2,7 @@
   <ion-app>
     <ion-split-pane content-id="main-content">
       <ion-menu content-id="main-content" type="overlay">       
-        <ion-content>
+        <ion-content class="ios content-ltr hydrated">
           <ion-list id="inbox-list">
         
             <ion-list-header>Pokedex</ion-list-header>
@@ -18,9 +18,19 @@
             </ion-menu-toggle>
           </ion-list>
   
-          <ion-list>
-          <ion-item v-for="item in items" :key="item.id">
-            <ion-label>{{ item }}</ion-label>
+          <ion-list inset mode="ios">
+          <ion-item v-for="pok in items" :key="pok.id">
+            <ion-thumbnail slot="start">
+              <img :alt="pok.name" :src="pok.sprites.front_default" />
+            </ion-thumbnail>
+            <ion-label>
+              <h1 class=" caps sc-ion-label-ios-h sc-ion-label-ios-s ios"><strong>{{ pok.name }}</strong></h1>
+              <p>nr. {{ pok.id }}</p>
+              </ion-label>
+              <template v-for="(type , index) in pok.types" :key="index">
+                <ion-badge slot="end">{{type.type.name}}</ion-badge>
+              </template>
+              
           </ion-item>
         </ion-list>
           
@@ -78,15 +88,35 @@ export default defineComponent({
     }
 
     
-    interface basicPokemon {
+   /* interface basicPokemon {
         id: number;
         name: string;
         sprint: URL;
+        sprites: Array<string>;
         types: Array<any>;
-      }
-      type GetUsersResponse = {
-        data: basicPokemon[];
-      };
+      }*/
+      
+
+ interface Sprites {
+    front_default: string;
+}
+
+ interface Type2 {
+    name: string;
+}
+
+ interface Type {
+    slot: number;
+    type: Type2;
+}
+
+ interface basicPokemon {
+    id: number;
+    name: string;
+    sprites: Sprites;
+    types: Type[];
+}
+     
 
   
     //https://bobbyhadz.com/blog/typescript-http-request-axios
@@ -112,6 +142,7 @@ export default defineComponent({
           //.then(data => items.value.push(data.data[0]));
           .then(data => data.data.forEach(function(pok: basicPokemon){
             items.value.push(pok);
+            console.log(pok.sprites["front_default"])
           }));
     
       
@@ -134,7 +165,7 @@ export default defineComponent({
       data: getAllPokemon(),
     }*/
  
-   // Todo, scroll at 
+   // Todo, scroll at -> pushdata 2x aanzetten
    /* const pushData = () => {
       const max = items.value.length + 20;
       const min = max - 20;
@@ -159,7 +190,7 @@ export default defineComponent({
       }, 500);
     }
     
-    pushData();
+    //pushData();
     
 
     const selectedIndex = ref(0);
