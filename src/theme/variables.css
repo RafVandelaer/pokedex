@@ -240,6 +240,6 @@ http://ionicframework.com/docs/theming/ */
 .caps{
   text-transform: capitalize;
 }
-.ion-badge{
-  margin: 0;
+.noMargin{
+  margin: 1px;
 }

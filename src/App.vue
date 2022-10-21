@@ -19,7 +19,7 @@
           </ion-list>
   
           <ion-list inset mode="ios">
-          <ion-item v-for="pok in items" :key="pok.id">
+          <ion-item @click="showPokemon" v-for="pok in items" :key="pok.id">
             <ion-thumbnail slot="start">
               <img :alt="pok.name" :src="pok.sprites.front_default" />
             </ion-thumbnail>
@@ -28,7 +28,7 @@
               <p>nr. {{ pok.id }}</p>
               </ion-label>
               <template v-for="(type , index) in pok.types" :key="index">
-                <ion-badge slot="end">{{type.type.name}}</ion-badge>
+                <ion-badge class="noMargin" slot="end">{{type.type.name}}</ion-badge>
               </template>
               
           </ion-item>
@@ -141,8 +141,14 @@ export default defineComponent({
           //.then(data => console.log(data.data[0]));
           //.then(data => items.value.push(data.data[0]));
           .then(data => data.data.forEach(function(pok: basicPokemon){
+            try{
             items.value.push(pok);
             console.log(pok.sprites["front_default"])
+            }
+            catch(err){
+              //todo error handling
+                  console.log(err)
+            }
           }));
     
       
@@ -160,20 +166,7 @@ export default defineComponent({
  
 
     const items = ref<basicPokemon[]>([]);
-  // const it: GetUsersResponse[] = getAllPokemon();
-   /* const items: GetUsersResponse = {
-      data: getAllPokemon(),
-    }*/
- 
-   // Todo, scroll at -> pushdata 2x aanzetten
-   /* const pushData = () => {
-      const max = items.value.length + 20;
-      const min = max - 20;
-      for (let i = min; i < max; i++) {
-        //console.log(poks[i]);
-       items.value.push(i);
-      }
-    }*/
+
     
     const loadData = (ev: InfiniteScrollCustomEvent) => {
       setTimeout(() => {
