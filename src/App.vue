@@ -17,9 +17,26 @@
               </ion-item>
             </ion-menu-toggle>
           </ion-list>
+          <ion-row>
+            <ion-col> <ion-card>
+                <ion-card-header>
+                  <ion-card-title>Team</ion-card-title>
+                  <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+                </ion-card-header>         
+              </ion-card>
+            </ion-col>
+            <ion-col> <ion-card>
+                <ion-card-header>
+                  <ion-card-title>Favorieten</ion-card-title>
+                  <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+                </ion-card-header>         
+              </ion-card>
+            </ion-col>
+        </ion-row>
+         
   
           <ion-list inset mode="ios">
-          <ion-item v-on:click="getPokemon(pok.id)" v-for="pok in items" :key="pok.id">
+          <ion-item v-on:click="getPokemon(pok.id)" :router-link="pok.name" v-for="pok in items" :key="pok.id">
             <ion-thumbnail slot="start">
               <img :alt="pok.name" :src="pok.sprites.front_default" />
             </ion-thumbnail>
@@ -65,6 +82,8 @@ import axios from 'axios';
 export default defineComponent({
   name: 'App',
   components: {
+
+
     IonSearchbar,
 
     IonApp, 
@@ -87,6 +106,7 @@ export default defineComponent({
     const toggleInfiniteScroll = () => {
       isDisabled.value = !isDisabled.value;
     }
+    
 
     const items = ref<basicPokemon[]>([]);
     
@@ -143,6 +163,8 @@ export default defineComponent({
         }
       }, 500);
     }
+
+    
     
     //pushData();
     
@@ -223,9 +245,21 @@ export default defineComponent({
       isSelected: (url: string) => url === route.path ? 'selected' : ''
     }
   },
-  methods: {
+ methods: {
+   
     getPokemon(id: number){
-      this.retreivePokemon(id).then(res => console.log(res))
+   
+      //this.retreivePokemon(id).then(res => console.log(res))
+      this.retreivePokemon(id).then(function(pok: Pokedex){
+      
+        //console.log(pok.name);
+        //this.pokename = pok.name
+       
+        
+        
+
+      })
+  
     },
 
     async retreivePokemon(id: number) {
@@ -243,12 +277,15 @@ export default defineComponent({
             //console.log(res.status)
         }      
         
-        return res.data
+        //return res.data
+       
+        //console.log(res.data)
+        return res.data;
     }
     catch (err) {
         console.error(err);
     }
-          
+         
     },
 
    
