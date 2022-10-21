@@ -19,7 +19,7 @@
           </ion-list>
   
           <ion-list inset mode="ios">
-          <ion-item v-on:click="showPokemon(pok.id)" v-for="pok in items" :key="pok.id">
+          <ion-item v-on:click="getPokemon(pok.id)" v-for="pok in items" :key="pok.id">
             <ion-thumbnail slot="start">
               <img :alt="pok.name" :src="pok.sprites.front_default" />
             </ion-thumbnail>
@@ -53,11 +53,11 @@
 </template>
 
 <script lang="ts">
-import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane, IonSearchbar, IonInfiniteScroll, IonInfiniteScrollContent, InfiniteScrollCustomEvent } from '@ionic/vue';
+import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonRouterOutlet, IonSplitPane, IonSearchbar, IonInfiniteScroll, IonInfiniteScrollContent, InfiniteScrollCustomEvent } from '@ionic/vue';
 import { defineComponent, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp, funnelOutline, funnelSharp, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
-import {basicPokemon, Sprites,Type, Type2 } from './ts/basicPokemon';
+import {basicPokemon } from './ts/basicPokemon';
 import {Pokedex } from './ts/detailedPokemon';
 
 import axios from 'axios';
@@ -87,12 +87,27 @@ export default defineComponent({
     const toggleInfiniteScroll = () => {
       isDisabled.value = !isDisabled.value;
     }
+
+    const items = ref<basicPokemon[]>([]);
     
     async function getAllPokemon()
     {
-          let response = await axios.get<basicPokemon[]>('https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon');
-          let data = await response
-          return data;
+          //let response = await axios.get<basicPokemon[]>('https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon');
+              try {
+                let response = await axios({
+                  url: 'https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon',
+                  method: 'get',
+                  timeout: 8000,
+                  headers: {
+                      'Content-Type': 'application/json',
+                  }})
+                let data = await response
+            return data;
+            } catch(error ){
+               console.log(error)
+          }
+
+          
         }
     getAllPokemon()
           //.then(data => console.log(data.data[0]));
@@ -111,9 +126,9 @@ export default defineComponent({
   
  
 
-    const items = ref<basicPokemon[]>([]);
+   
 
-    
+    //TODO  infinite scroll
     const loadData = (ev: InfiniteScrollCustomEvent) => {
       setTimeout(() => {
         //Todo
@@ -209,11 +224,35 @@ export default defineComponent({
     }
   },
   methods: {
-    showPokemon() {
-      let response =  axios.get<basicPokemon[]>('https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon');
-          let data =  response
-          return data;
+    getPokemon(id: number){
+      this.retreivePokemon(id).then(res => console.log(res))
     },
+
+    async retreivePokemon(id: number) {
+          try {
+            let res = await axios({
+            url: 'https://pokeapi.co/api/v2/pokemon/' + id,
+            method: 'get',
+            timeout: 8000,
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        if(res.status == 200){
+            // test for status you want, etc
+            //console.log(res.status)
+        }      
+        
+        return res.data
+    }
+    catch (err) {
+        console.error(err);
+    }
+          
+    },
+
+   
+
     
   }
 
