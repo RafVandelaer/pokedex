@@ -35,8 +35,8 @@
               <span v-for="(pok, ind)  in pokeDetail" :key="ind">
               <ion-row  v-for="(stat, ind)  in pok.stats" :key="ind">
                 <ion-col class="caps" size="3">{{stat.stat.name}}</ion-col>
-                <ion-col size="1">{{stat.base_stat}}</ion-col>
-                <ion-col size="8" class="autoMargin"><ion-progress-bar   v-bind:value="stat.base_stat/100"></ion-progress-bar></ion-col>
+                <ion-col size="1" class="blackColor autoMargin">{{stat.base_stat}}</ion-col>
+                <ion-col size="8" class="autoMargin" ><ion-progress-bar :color="stat.base_stat <=49 ?  'danger'  : 'success'"   v-bind:value="stat.base_stat/100"></ion-progress-bar></ion-col>
               </ion-row>
             </span>
                 </ion-card-content>
