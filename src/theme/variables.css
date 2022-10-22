@@ -272,6 +272,12 @@ http://ionicframework.com/docs/theming/ */
   border-radius: 20px;
   border: 3px solid  rgb(35, 35, 35);
 }
+.height{
+  height: 100%;
+}
+.vertical-align{
+  vertical-align: middle;
+}
 
 .grass{
   background-color: rgb(14, 168, 14);
@@ -322,5 +328,8 @@ http://ionicframework.com/docs/theming/ */
   background-color: black;
 }
 .fairy{
-  background-color: rgb(221, 41, 227);
+  background-color: rgb(240, 139, 244);
+}
+.scroll-y{
+  background-color: #f4f4f4;
 }

@@ -5,25 +5,22 @@
         <ion-buttons slot="start">
           <ion-menu-button color="primary"></ion-menu-button>
         </ion-buttons>
-        <ion-title>{{ $route.params.name}}</ion-title>
+        <ion-title class="caps">{{ $route.params.name}}</ion-title>
       </ion-toolbar>
     </ion-header>
     
     <ion-content :fullscreen="true">
       
     
-      <div id="container">
-        <strong  class="capitalize">{{ $route.params.name }}</strong>
-        <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-      </div>
+      
 
       <ion-grid id="pokemonDetails">
         <ion-row>
           <ion-col >
             
-            <div  v-for="pok in pokeDetail" :key="pok.id">
+            <div class="height" v-for="pok in pokeDetail" :key="pok.id">
            
-              <img class="frontSprite" :alt="pok.name" :src="pok.sprites.front_default" />
+              <img class="frontSprite height vertical-align" :alt="pok.name" :src="pok.sprites.front_default" />
             
               
             </div>
