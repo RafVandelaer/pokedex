@@ -21,12 +21,12 @@
         <ion-row>
           <ion-col >
             
-            <ion-item  v-for="pok in pokeDetail" :key="pok.id">
-            <ion-thumbnail slot="start">
-              <img :alt="pok.name" :src="pok.sprites.front_default" />
-            </ion-thumbnail>
+            <div  v-for="pok in pokeDetail" :key="pok.id">
+           
+              <img class="frontSprite" :alt="pok.name" :src="pok.sprites.front_default" />
+            
               
-          </ion-item>
+            </div>
         </ion-col>
           <ion-col>
             Stats
