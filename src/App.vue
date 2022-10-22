@@ -7,7 +7,7 @@
         
             <ion-list-header>Pokedex</ion-list-header>
             
-            <ion-searchbar animated="true" placeholder="Pokémon zoeken"></ion-searchbar>
+            <ion-searchbar animated="true" placeholder="Pokémon zoeken" ></ion-searchbar>
 
 
             <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
@@ -246,7 +246,9 @@ export default defineComponent({
   },
  methods: {
     
-   
+  ionChange(){
+    alert('ja!');
+  },
     getPokemon(id: number){
    
       //this.retreivePokemon(id).then(res => console.log(res))
