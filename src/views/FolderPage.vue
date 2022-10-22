@@ -55,7 +55,7 @@
                 <ion-col class="caps" size="6">Types</ion-col>
                 <ion-col>
                     <span style="width: 100%;" v-for="(types, ind)  in pok.types" :key="ind">
-                      <ion-badge class="noMargin" >{{types.type.name}}</ion-badge>
+                      <ion-badge :class="types.type.name" class="noMargin" >{{types.type.name}}</ion-badge>
                     </span>
                 </ion-col>
               </ion-row>
@@ -209,20 +209,6 @@ export default defineComponent({
  
   //axiosTest().then(response => pokemon);
   
-
-  //not in use
-  const getPokeSync = async (id:any) => {
-        await axios.get('https://pokeapi.co/api/v2/pokemon/' + id,{
-              headers: {
-                'Content-Type': 'application/json',
-            }
-            }).then(resp => {
-
-            return  resp.data;
-
-            })};
-
-   //let pokemon  =  getPokeSync(route.params.name)
      
   return{
       pokeDetail,
@@ -232,12 +218,10 @@ export default defineComponent({
   data(){
       return{
         pokename: "hi",
-      
+        
         //poke = new Pokedex();
       }
   }, 
- 
-  
   
   
 });

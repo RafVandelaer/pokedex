@@ -249,3 +249,78 @@ http://ionicframework.com/docs/theming/ */
 .blackColor{
   color : black;
 }
+.frontSprite{
+  display: block;
+  margin: auto;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(163, 163, 163) rgb(35, 35, 35);
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background:  rgb(35, 35, 35);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(163, 163, 163);
+  border-radius: 20px;
+  border: 3px solid  rgb(35, 35, 35);
+}
+
+.grass{
+  background-color: rgb(14, 168, 14);
+}
+.fire{
+  background-color: rgb(211, 43, 5);
+}
+.water{
+  background-color: rgb(7, 7, 242);
+}
+.electric{
+  background-color: rgb(241, 237, 7);
+}
+.ice{
+  background-color: rgb(8, 190, 222);
+}
+.poison{
+  background-color: rgb(228, 3, 232);
+}
+.psychic{
+  background-color: rgb(136, 7, 180);
+}
+.fighting{
+  background-color: rgb(112, 7, 7);
+}
+.ground{
+  background-color: rgb(134, 55, 6);
+}
+.rock{
+  background-color: rgb(122, 122, 122);
+}
+.bug{
+  background-color: rgb(11, 239, 11);
+}
+.flying{
+  background-color: rgb(44, 8, 171);
+}
+.ghost{
+  background-color: rgb(181, 192, 233);
+}
+.dragon{
+  background-color: rgb(227, 140, 9);
+}
+.steel{
+  background-color: silver;
+}
+.dark{
+  background-color: black;
+}
+.fairy{
+  background-color: rgb(221, 41, 227);
+}

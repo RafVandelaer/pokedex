@@ -45,10 +45,11 @@
               <p>nr. {{ pok.id }}</p>
               </ion-label>
               <template v-for="(type , index) in pok.types" :key="index">
-                <ion-badge class="noMargin" slot="end">{{type.type.name}}</ion-badge>
+                <ion-badge :class="type.type.name" class="noMargin" slot="end">{{type.type.name}}</ion-badge>
               </template>
               
           </ion-item>
+
         </ion-list>
           
             <ion-infinite-scroll
@@ -244,6 +245,7 @@ export default defineComponent({
     }
   },
  methods: {
+    
    
     getPokemon(id: number){
    
