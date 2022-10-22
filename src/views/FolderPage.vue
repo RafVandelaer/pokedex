@@ -73,15 +73,15 @@
               </ion-row>
               <ion-row >
                 <ion-col class="caps" size="6">Hoogte</ion-col>
-                <ion-col class="caps">
-                    {{pok.height}}
+                <ion-col >
+                    {{pok.height}}m
                 </ion-col>
               </ion-row>
               <ion-row >
                 <ion-col class="caps" size="6">Abilities</ion-col>
                 <ion-col>
-                    <span style="width: 100%;" v-for="(abs, ind)  in pok.abilities" :key="ind">
-                      <ion-badge class="noMargin" >{{abs.ability.name}}</ion-badge>
+                    <span class="caps" style="width: 100%;" v-for="(abs, ind)  in pok.abilities" :key="ind">
+                      {{abs.ability.name}}&nbsp;
                     </span>
                 </ion-col>
               </ion-row>
