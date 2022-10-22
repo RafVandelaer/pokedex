@@ -5,7 +5,11 @@
         <ion-buttons slot="start">
           <ion-menu-button color="primary"></ion-menu-button>
         </ion-buttons>
-        <ion-title class="caps">{{ $route.params.name}}</ion-title>
+        <ion-title class="caps">
+          <div v-for="pok in pokeDetail" :key="pok.id">
+           {{pok.name}}
+          </div>  
+        </ion-title>
       </ion-toolbar>
     </ion-header>
     
@@ -26,8 +30,10 @@
             </div>
         </ion-col>
           <ion-col>
-            Stats
             <ion-card>
+              <ion-card-header>
+                <ion-card-subtitle>Stats</ion-card-subtitle>
+              </ion-card-header>
              <ion-card-content>
               <span v-for="(pok, ind)  in pokeDetail" :key="ind">
               <ion-row  v-for="(stat, ind)  in pok.stats" :key="ind">
@@ -44,10 +50,13 @@
         </ion-row>
         <ion-row>
           <ion-col size="6">
-            Info
+           
           <ion-card>
-            
+            <ion-card-header>
+                <ion-card-subtitle>Info</ion-card-subtitle>
+              </ion-card-header>
              <ion-card-content  v-for="(pok, ind)  in pokeDetail" :key="ind">
+              
               <ion-row >
                 <ion-col class="caps" size="6">Types</ion-col>
                 <ion-col>
@@ -78,7 +87,7 @@
                 <ion-col class="caps" size="6">Abilities</ion-col>
                 <ion-col>
                     <span class="caps" style="width: 100%;" v-for="(abs, ind)  in pok.abilities" :key="ind">
-                      {{abs.ability.name}}&nbsp;
+                      {{abs.ability.name}}<br>
                     </span>
                 </ion-col>
               </ion-row>
