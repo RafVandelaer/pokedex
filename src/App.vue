@@ -113,7 +113,7 @@ export default defineComponent({
     async function getAllPokemon()
     {
           //let response = await axios.get<basicPokemon[]>('https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon');
-              try {
+              
                 let response = await axios({
                   url: 'https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon',
                   method: 'get',
@@ -123,9 +123,7 @@ export default defineComponent({
                   }})
                 let data = await response
             return data;
-            } catch(error ){
-               console.log(error)
-          }
+            
 
           
         }

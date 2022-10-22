@@ -243,3 +243,6 @@ http://ionicframework.com/docs/theming/ */
 .noMargin{
   margin: 1px;
 }
+.autoMargin{
+  margin: auto;
+}
