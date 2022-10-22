@@ -36,13 +36,59 @@
               <ion-row  v-for="(stat, ind)  in pok.stats" :key="ind">
                 <ion-col class="caps" size="3">{{stat.stat.name}}</ion-col>
                 <ion-col size="1" class="blackColor autoMargin">{{stat.base_stat}}</ion-col>
-                <ion-col size="8" class="autoMargin" ><ion-progress-bar :color="stat.base_stat <=49 ?  'danger'  : 'success'"   v-bind:value="stat.base_stat/100"></ion-progress-bar></ion-col>
+                <ion-col size="8" class="autoMargin" ><ion-progress-bar :color="stat.base_stat <50 ?  'danger'  : 'success'"   v-bind:value="stat.base_stat/100"></ion-progress-bar></ion-col>
               </ion-row>
             </span>
                 </ion-card-content>
               </ion-card>
           </ion-col>
+         
           
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            Info
+          <ion-card>
+            
+             <ion-card-content  v-for="(pok, ind)  in pokeDetail" :key="ind">
+              <ion-row >
+                <ion-col class="caps" size="6">Types</ion-col>
+                <ion-col>
+                    <span style="width: 100%;" v-for="(types, ind)  in pok.types" :key="ind">
+                      <ion-badge class="noMargin" >{{types.type.name}}</ion-badge>
+                    </span>
+                </ion-col>
+              </ion-row>
+              <ion-row >
+                <ion-col class="caps" size="6">Nummer</ion-col>
+                <ion-col class="caps">
+                    {{pok.name}}
+                </ion-col>
+              </ion-row>
+              <ion-row >
+                <ion-col class="caps" size="6">Gewicht</ion-col>
+                <ion-col>
+                    {{pok.weight}} kg
+                </ion-col>
+              </ion-row>
+              <ion-row >
+                <ion-col class="caps" size="6">Hoogte</ion-col>
+                <ion-col class="caps">
+                    {{pok.height}}
+                </ion-col>
+              </ion-row>
+              <ion-row >
+                <ion-col class="caps" size="6">Abilities</ion-col>
+                <ion-col>
+                    <span style="width: 100%;" v-for="(abs, ind)  in pok.abilities" :key="ind">
+                      <ion-badge class="noMargin" >{{abs.ability.name}}</ion-badge>
+                    </span>
+                </ion-col>
+              </ion-row>
+
+              </ion-card-content>
+          </ion-card>
+          </ion-col>
         </ion-row>
       </ion-grid>
     </ion-content>
