@@ -13,8 +13,9 @@
         <ion-buttons slot="end">
             <ion-button>
               <div v-for="pok in pokeDetail" :key="pok.id">
-               <ion-icon class="like-icon" @click="likePokemon(pok.id)" float-right :icon="heartOutline" />
-              <!--<ion-icon class="like-icon" @click="likePokemon(pok.id)" float-right :icon="onChange ? heart : heartOutline" />-->
+               <!--<ion-icon class="like-icon" @click="likePokemon(pok.id)" float-right :icon="heartOutline" />-->
+               <ion-icon class="like-icon" @click="likePokemon(pok.id)" :icon="isLiked ? heart : heartOutline" float-right />
+               
             </div>
             </ion-button>
           </ion-buttons>
@@ -188,30 +189,46 @@ export default defineComponent({
     
 
      randomKey() {
-   return (new Date()).getTime() + Math.floor(Math.random() * 10000).toString()
+         return (new Date()).getTime() + Math.floor(Math.random() * 10000).toString()
     },
+
+    //cookies with favo's
     likePokemon(id: number){
     //this.$cookie.removeCookie('favos');
-      var favos;
-      console.log(this.$cookie.isCookieAvailable('favos'))
+    //not liked
+      if(!this.isLiked){
+        var favos :number[];
+        console.log(this.$cookie.isCookieAvailable('favos'))
 
-      //if cookie exists
-      if(this.$cookie.isCookieAvailable('favos')){
+        //if cookie exists
+        if(this.$cookie.isCookieAvailable('favos')){
+          
+          favos = this.$cookie.getCookie('favos').split(",");
+
+        favos.push(id);
+        }else{
+          favos = [id]
+        }
         
-        favos = this.$cookie.getCookie('favos').split(",");
-        console.log(typeof  favos);
-        console.log(favos)
-
-       favos.push(id);
-      }else{
-        favos = [id,id]
       }
-    
+      //is liked, unlike
+      else{
+        favos = this.$cookie.getCookie('favos').split(",");
+        //search ID, delete
+        favos.forEach(number => {
+          //console.log(number + " " + id);
+           if(number == id){
+            favos.splice(number,1)
+           }
+        });
+        
 
-      this.$cookie.setCookie('favos', favos);
+      }
+      this.$cookie.setCookie('favos', favos.toString());
+      this.isLiked = !this.isLiked;
     },
     
-    getPokemonDetails (name: any){
+    /*getPokemonDetails (name: any){
       try {
             axios.get('https://pokeapi.co/api/v2/pokemon/' + name,{
               headers: {
@@ -232,14 +249,15 @@ export default defineComponent({
                   //todo error
                            
               }
-    },
+    },*/
   },
 
   setup(){
     const route = useRoute();
     const cookie = useCookie();
+    const heartIcon = 'heartOutline';
 
-    const isReady = false;
+    var isLiked = ref(false);
    // let pokemon = ref<Pokedex>();
    console.log(route.params);
 
@@ -250,7 +268,17 @@ export default defineComponent({
   getDetailedPokemon().then(function(res: Pokedex){
       pokeDetail.value.pop();
       pokeDetail.value.push(res);
-      console.log(res)
+
+      //check if pokemon is liked, if so heart full
+      var favos :number[]= cookie.getCookie('favos').split(",");
+
+        favos.forEach(number => {
+           if(number == res.id){
+            isLiked.value = true;
+           }
+        });
+
+      //console.log(res)
   });
   //console.log(pokemon);
 
@@ -267,7 +295,7 @@ export default defineComponent({
 
     
     if(status != 200){
-      alert(status)
+      console.log(status)
     }
    
     let poke :Pokedex=  await data;
@@ -283,8 +311,9 @@ export default defineComponent({
       pokeDetail,
       heartOutline,
       heart,
-      isReady,
+      isLiked,
       onChange: ref(false),
+      heartIcon,
       }
   },
   data(){
