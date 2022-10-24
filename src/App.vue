@@ -6,8 +6,10 @@
           <ion-list id="inbox-list">
         
             <ion-list-header>Pokedex</ion-list-header>
-            
-            <ion-searchbar animated="true" placeholder="Pokémon zoeken" ></ion-searchbar>
+            <form >
+               <!--<ion-searchbar animated="true"  v-on:keyup.enter="searchbarPokemon($event)" placeholder="Pokémon zoeken" ></ion-searchbar>-->
+               <ion-searchbar animated="true"  debounce="1000"  @input="searchbarPokemon($event)" @keyup.enter.prevent placeholder="Pokémon zoeken" ></ion-searchbar>
+            </form>
 
 
             <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
@@ -78,6 +80,9 @@ import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp, funnelOut
 import {basicPokemon } from './ts/basicPokemon';
 import {Pokedex } from './ts/detailedPokemon';
 
+import { heart } from 'ionicons/icons';
+
+
 import axios from 'axios';
 
 export default defineComponent({
@@ -110,6 +115,7 @@ export default defineComponent({
     
 
     const items = ref<basicPokemon[]>([]);
+  
     
     async function getAllPokemon()
     {
@@ -241,13 +247,17 @@ export default defineComponent({
       toggleInfiniteScroll,
       loadData,
       items,
+      heart,
       isSelected: (url: string) => url === route.path ? 'selected' : ''
     }
   },
  methods: {
+
+
+  searchbarPokemon(e:any){
     
-  ionChange(){
-    alert('ja!');
+    this.$router.push(e.target.value);
+    
   },
     getPokemon(id: number){
    
