@@ -136,7 +136,7 @@ import { IonButtons, IonContent, IonIcon, IonHeader, IonMenuButton, IonPage, Ion
 import { heartOutline, heartSharp,heart } from 'ionicons/icons';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import VueCookies from 'vue-cookies'
+import { useCookie } from 'vue-cookie-next'
 import Vue from 'vue'
 
 import {Pokedex } from '../ts/detailedPokemon';
@@ -184,13 +184,31 @@ export default defineComponent({
     
   },
   methods: {
+
+    
+
      randomKey() {
    return (new Date()).getTime() + Math.floor(Math.random() * 10000).toString()
     },
-    likePokemon(name: string){
-      /*window.$cookies.set("username", "test");
-      alert(this.$cookies.get("username"));
-      Vue.cookie.get('access_token')*/
+    likePokemon(id: number){
+    //this.$cookie.removeCookie('favos');
+      var favos;
+      console.log(this.$cookie.isCookieAvailable('favos'))
+
+      //if cookie exists
+      if(this.$cookie.isCookieAvailable('favos')){
+        
+        favos = this.$cookie.getCookie('favos').split(",");
+        console.log(typeof  favos);
+        console.log(favos)
+
+       favos.push(id);
+      }else{
+        favos = [id,id]
+      }
+    
+
+      this.$cookie.setCookie('favos', favos);
     },
     
     getPokemonDetails (name: any){
@@ -219,6 +237,8 @@ export default defineComponent({
 
   setup(){
     const route = useRoute();
+    const cookie = useCookie();
+
     const isReady = false;
    // let pokemon = ref<Pokedex>();
    console.log(route.params);

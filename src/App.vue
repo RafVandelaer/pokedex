@@ -88,6 +88,8 @@ import { heart } from 'ionicons/icons';
 // @ts-ignore
 import { vue3Debounce } from 'vue-debounce'
 
+import { useCookie } from 'vue-cookie-next'
+
 
 import axios from 'axios';
 
@@ -116,6 +118,7 @@ export default defineComponent({
     debounce: vue3Debounce({ lock: true })
   },
   setup() {
+    const cookie = useCookie();
 
     //infinit scroll
     const isDisabled = ref(false);
@@ -279,13 +282,7 @@ export default defineComponent({
    
       //this.retreivePokemon(id).then(res => console.log(res))
       this.retreivePokemon(id).then(function(pok: Pokedex){
-      
-        //console.log(pok.name);
-        //this.pokename = pok.name
-       
-        
-        
-
+          console.log(pok.name);
       })
   
     },
