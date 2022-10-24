@@ -333,3 +333,10 @@ http://ionicframework.com/docs/theming/ */
 .scroll-y{
   background-color: #f4f4f4;
 }
+ion-badge{
+  border: 1px solid rgb(118, 118, 118);
+}
+.moveset-badge{
+  border: 1px solid #2ea047;
+  background-color: #5ddf79;
+}

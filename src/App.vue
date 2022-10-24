@@ -7,8 +7,9 @@
         
             <ion-list-header>Pokedex</ion-list-header>
             <form >
-               <!--<ion-searchbar animated="true"  v-on:keyup.enter="searchbarPokemon($event)" placeholder="Pokémon zoeken" ></ion-searchbar>-->
-               <ion-searchbar animated="true"  debounce="1000"  @input="searchbarPokemon($event)" @keyup.enter.prevent placeholder="Pokémon zoeken" ></ion-searchbar>
+               
+               <!--<ion-searchbar animated="true"  ref="searchbar"  @input="searchbarPokemon($event)" @keyup.enter.prevent placeholder="Pokémon zoeken" ></ion-searchbar>-->
+               <ion-searchbar animated="true"  ref="searchbar" type="text" v-debounce:1000ms="searchbarPokemon" @keyup.enter.prevent @keydown.enter.prevent placeholder="Pokémon zoeken" ></ion-searchbar>
             </form>
 
 
@@ -79,8 +80,14 @@ import { useRoute } from 'vue-router';
 import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp, funnelOutline, funnelSharp, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import {basicPokemon } from './ts/basicPokemon';
 import {Pokedex } from './ts/detailedPokemon';
-
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import debounce from 'lodash/debounce'; 
 import { heart } from 'ionicons/icons';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { vue3Debounce } from 'vue-debounce'
 
 
 import axios from 'axios';
@@ -104,6 +111,10 @@ export default defineComponent({
     IonMenuToggle,  
     IonRouterOutlet, 
     IonSplitPane,
+  },
+
+  directives: {
+    debounce: vue3Debounce({ lock: true })
   },
   setup() {
 
@@ -251,13 +262,19 @@ export default defineComponent({
       isSelected: (url: string) => url === route.path ? 'selected' : ''
     }
   },
+
+  
  methods: {
 
-
-  searchbarPokemon(e:any){
-    
+  
+  searchbarPokemon(val: any, e:any){
     this.$router.push(e.target.value);
-    
+  },
+ 
+
+  setPokemon(){
+    console.log(".")
+  
   },
     getPokemon(id: number){
    

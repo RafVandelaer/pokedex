@@ -20,6 +20,11 @@
 
       <ion-grid id="pokemonDetails">
         <ion-row>
+          <ion-col>
+            <ion-icon slot="start" ios="bookmark" ></ion-icon>
+          </ion-col>
+        </ion-row>
+        <ion-row>
           <ion-col >
             
             <div class="height" v-for="pok in pokeDetail" :key="pok.id">
@@ -91,9 +96,26 @@
                     </span>
                 </ion-col>
               </ion-row>
-
               </ion-card-content>
           </ion-card>
+          </ion-col>
+          <ion-col>
+            <ion-card>
+              <ion-card-header>
+                <ion-card-subtitle>Moveset</ion-card-subtitle>
+              </ion-card-header>
+             <ion-card-content>
+              <span v-for="(pok, ind)  in pokeDetail" :key="ind">
+              <ion-row  v-for="(mov, ind)  in pok.moves.slice(0,5)" :key="ind">
+               
+                <ion-col class="caps" size="3">{{mov.move.name}}</ion-col>
+                <ion-col size="1" class="autoMargin"><ion-badge class="moveset-badge">Level {{Math.ceil(Math.random()*20)}}</ion-badge></ion-col>
+               
+                
+              </ion-row>
+            </span>
+                </ion-card-content>
+              </ion-card>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -205,8 +227,11 @@ export default defineComponent({
           Accept: 'application/json',
         },
       },
-    );
-
+    )
+    if(status != 200){
+      alert(status)
+    }
+   
     let poke :Pokedex=  await data;
     return poke;
   
