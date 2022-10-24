@@ -82,7 +82,6 @@ import {basicPokemon } from './ts/basicPokemon';
 import {Pokedex } from './ts/detailedPokemon';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import debounce from 'lodash/debounce'; 
 import { heart } from 'ionicons/icons';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

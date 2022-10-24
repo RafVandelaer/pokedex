@@ -10,6 +10,14 @@
            {{pok.name}}
           </div>  
         </ion-title>
+        <ion-buttons slot="end">
+            <ion-button>
+              <div v-for="pok in pokeDetail" :key="pok.id">
+               <ion-icon class="like-icon" @click="likePokemon(pok.id)" float-right :icon="heartOutline" />
+              <!--<ion-icon class="like-icon" @click="likePokemon(pok.id)" float-right :icon="onChange ? heart : heartOutline" />-->
+            </div>
+            </ion-button>
+          </ion-buttons>
       </ion-toolbar>
     </ion-header>
     
@@ -20,9 +28,7 @@
 
       <ion-grid id="pokemonDetails">
         <ion-row>
-          <ion-col>
-            <ion-icon slot="start" ios="bookmark" ></ion-icon>
-          </ion-col>
+        
         </ion-row>
         <ion-row>
           <ion-col >
@@ -126,10 +132,15 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router'
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonButtons, IonContent, IonIcon, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { heartOutline, heartSharp,heart } from 'ionicons/icons';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import VueCookies from 'vue-cookies'
+import Vue from 'vue'
+
 import {Pokedex } from '../ts/detailedPokemon';
 import axios from 'axios';
-
 
 
 export default defineComponent({
@@ -175,6 +186,11 @@ export default defineComponent({
   methods: {
      randomKey() {
    return (new Date()).getTime() + Math.floor(Math.random() * 10000).toString()
+    },
+    likePokemon(name: string){
+      /*window.$cookies.set("username", "test");
+      alert(this.$cookies.get("username"));
+      Vue.cookie.get('access_token')*/
     },
     
     getPokemonDetails (name: any){
@@ -228,6 +244,8 @@ export default defineComponent({
         },
       },
     )
+
+    
     if(status != 200){
       alert(status)
     }
@@ -243,14 +261,14 @@ export default defineComponent({
      
   return{
       pokeDetail,
+      heartOutline,
+      heart,
       isReady,
+      onChange: ref(false),
       }
   },
   data(){
       return{
-        pokename: "hi",
-        
-        //poke = new Pokedex();
       }
   }, 
   

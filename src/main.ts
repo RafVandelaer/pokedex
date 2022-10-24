@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
+import VueCookies from 'vue-cookies';
 
 import { IonicVue } from '@ionic/vue';
 
@@ -25,7 +26,10 @@ import './theme/variables.css';
 
 const app = createApp(App)
   .use(IonicVue)
-  .use(router);
+  .use(router)
+  .use(VueCookies,{ 
+    expires: '30d', 
+  });
   
 router.isReady().then(() => {
   app.mount('#app');
