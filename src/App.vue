@@ -7,18 +7,8 @@
         
             <ion-list-header>Pokedex</ion-list-header>
             <form >
-               
-               <!--<ion-searchbar animated="true"  ref="searchbar"  @input="searchbarPokemon($event)" @keyup.enter.prevent placeholder="Pokémon zoeken" ></ion-searchbar>-->
                <ion-searchbar animated="true"  ref="searchbar" type="text" v-debounce:1000ms="searchbarPokemon" @keyup.enter.prevent @keydown.enter.prevent placeholder="Pokémon zoeken" ></ion-searchbar>
             </form>
-
-
-          <!--  <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
-              <ion-item @click="selectedIndex = i" router-direction="root" :router-link="p.url" lines="none" detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
-                <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
-              </ion-item>
-            </ion-menu-toggle>-->
           </ion-list>
           <ion-row>
             <ion-col> <ion-card>
