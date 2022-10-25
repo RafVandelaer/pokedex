@@ -35,7 +35,7 @@
           <ion-col >
             
             <div class="height" v-for="pok in pokeDetail" :key="pok.id">
-           
+              
               <img class="frontSprite height vertical-align" :alt="pok.name" :src="pok.sprites.front_default" />
             
               
@@ -134,11 +134,10 @@
 import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router'
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import { heartOutline, heartSharp,heart } from 'ionicons/icons';
+import { heartOutline, heart } from 'ionicons/icons';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { useCookie } from 'vue-cookie-next'
-import Vue from 'vue'
 
 import {Pokedex } from '../ts/detailedPokemon';
 import axios from 'axios';
@@ -178,12 +177,14 @@ export default defineComponent({
       }
       //is liked, unlike
       else{
+        
         favos = this.$cookie.getCookie('favos').split(",");
         //search ID, delete
         favos.forEach(number => {
           //console.log(number + " " + id);
            if(number == id){
-            favos.splice(number,1)
+            console.log(number)
+            favos.splice(number-1,1)
            }
         });
         
@@ -260,6 +261,7 @@ export default defineComponent({
   },
   data(){
       return{
+       
       }
   }, 
   

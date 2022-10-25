@@ -67,25 +67,20 @@
 </template>
 
 <script lang="ts">
-import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonRouterOutlet, IonSplitPane, IonSearchbar, IonInfiniteScroll, IonInfiniteScrollContent, InfiniteScrollCustomEvent } from '@ionic/vue';
-import { defineComponent, onMounted, ref } from 'vue';
+import { IonApp, IonContent, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonRouterOutlet, IonSplitPane, IonSearchbar,  InfiniteScrollCustomEvent } from '@ionic/vue';
+import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp, funnelOutline, funnelSharp, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp,  heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import {basicPokemon } from './ts/basicPokemon';
-import {Pokedex } from './ts/detailedPokemon';
+//import {Pokedex } from './ts/detailedPokemon';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { heart } from 'ionicons/icons';
-
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { vue3Debounce } from 'vue-debounce'
-
 import { useCookie } from 'vue-cookie-next'
-
-
 import axios from 'axios';
-import { ItemSliding } from '@ionic/core/dist/types/components/item-sliding/item-sliding';
 
 export default defineComponent({
   name: 'App',
@@ -107,14 +102,25 @@ export default defineComponent({
   },
   setup() {
     const cookie = useCookie();
+    const selectedIndex = ref(0);
+    var favos, aantalFavo
+    if(cookie.isCookieAvailable('favos')){
+      favos = cookie.getCookie('favos').split(",");
+       aantalFavo = favos.length;
+    } 
+    // if no favos
+    else{
+     favos = [];
+     aantalFavo = favos.length;
+    }
+    const route = useRoute();
 
     //infinit scroll
     const isDisabled = ref(false);
     const toggleInfiniteScroll = () => {
       isDisabled.value = !isDisabled.value;
     }
-    var favos = cookie.getCookie('favos').split(",");
-    var aantalFavo = favos.length;
+    
     
 
     //alert(favos.length)
@@ -170,9 +176,7 @@ export default defineComponent({
       }, 500);
     }
 
-    const selectedIndex = ref(0);
-    //const path = window.location.pathname.split('folder/')[1];
-    const route = useRoute();
+ 
    
 
 
@@ -214,35 +218,33 @@ export default defineComponent({
           list.value.pop();
         }
               
-                let response =  axios({
+               axios({
                   url: 'https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon',
                   method: 'get',
                   timeout: 8000,
                  })
                   .then(data => data.data.forEach(function(pok: basicPokemon){
                       try{
+                        //check if list is favorites
                         if(whichList === "favorites"){
                           favos.forEach(number  => {
-                            
                                 if(number == pok.id){
                                   list.value.push(pok);
                                 }
-                              }
-                            
+                              } 
                           )}
+                          //if list is all, fill all pokémon
                           else if (whichList === 'all'){
                               list.value.push(pok);                        
                             }
                       }
                       catch(err){
                         //todo error handling
+                        alert("Oeps, er ging iets fout...")
                             console.log(err)
                       }
                     }))
-                   
-            
 
-          
         
   },
 
@@ -256,43 +258,6 @@ export default defineComponent({
     console.log(".")
   
   },
-    /*getPokemon(id: number){
-   
-      //this.retreivePokemon(id).then(res => console.log(res))
-      this.retreivePokemon(id).then(function(pok: Pokedex){
-          console.log(pok.name);
-      })
-  
-    },*/
-/*
-    async retreivePokemon(id: number) {
-          try {
-            let res = await axios({
-            url: 'https://pokeapi.co/api/v2/pokemon/' + id,
-            method: 'get',
-            timeout: 8000,
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        if(res.status == 200){
-            // test for status you want, etc
-            //console.log(res.status)
-        }      
-        
-        //return res.data
-       
-        //console.log(res.data)
-        return res.data;
-    }
-    catch (err) {
-        console.error(err);
-    }
-         
-    },*/
-
-   
-
     
   }
 
