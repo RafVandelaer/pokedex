@@ -80,7 +80,7 @@
               <ion-row >
                 <ion-col class="caps" size="6">Nummer</ion-col>
                 <ion-col class="caps">
-                    {{pok.name}}
+                    {{pok.id}}
                 </ion-col>
               </ion-row>
               <ion-row >
