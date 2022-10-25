@@ -11,17 +11,19 @@
             </form>
           </ion-list>
           <ion-row>
-            <ion-col> <ion-card>
+            <ion-col>
+              <ion-card color="tertiary" @click="updatePokemonList('all')">
                 <ion-card-header>
-                  <ion-card-title>Team</ion-card-title>
-                  <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+                  <ion-card-title>All</ion-card-title>
+                  <ion-card-subtitle>150 Pokemon</ion-card-subtitle>
                 </ion-card-header>         
               </ion-card>
             </ion-col>
-            <ion-col> <ion-card>
+            <ion-col> 
+              <ion-card @click="updatePokemonList('favorites')" color="success">
                 <ion-card-header>
                   <ion-card-title>Favorieten</ion-card-title>
-                  <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+                  <ion-card-subtitle>{{aantalFavo}} Pokemon</ion-card-subtitle>
                 </ion-card-header>         
               </ion-card>
             </ion-col>
@@ -29,7 +31,8 @@
          
   
           <ion-list inset mode="ios">
-          <ion-item v-on:click="getPokemon(pok.id)" :router-link="pok.name" v-for="pok in items" :key="pok.id">
+            <!--v-on:click="getPokemon(pok.id)"-->
+          <ion-item  :router-link="pok.name" v-for="pok in items" :key="pok.id">
             <ion-thumbnail slot="start">
               <img :alt="pok.name" :src="pok.sprites.front_default" />
             </ion-thumbnail>
@@ -82,6 +85,7 @@ import { useCookie } from 'vue-cookie-next'
 
 
 import axios from 'axios';
+import { ItemSliding } from '@ionic/core/dist/types/components/item-sliding/item-sliding';
 
 export default defineComponent({
   name: 'App',
@@ -109,7 +113,11 @@ export default defineComponent({
     const toggleInfiniteScroll = () => {
       isDisabled.value = !isDisabled.value;
     }
+    var favos = cookie.getCookie('favos').split(",");
+    var aantalFavo = favos.length;
     
+
+    //alert(favos.length)
 
     const items = ref<basicPokemon[]>([]);
   
@@ -122,9 +130,7 @@ export default defineComponent({
                   url: 'https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon',
                   method: 'get',
                   timeout: 8000,
-                  headers: {
-                      'Content-Type': 'application/json',
-                  }})
+                  })
                 let data = await response
             return data;
             
@@ -132,8 +138,6 @@ export default defineComponent({
           
         }
     getAllPokemon()
-          //.then(data => console.log(data.data[0]));
-          //.then(data => items.value.push(data.data[0]));
           .then(data => data.data.forEach(function(pok: basicPokemon){
             try{
             items.value.push(pok);
@@ -155,7 +159,7 @@ export default defineComponent({
       setTimeout(() => {
         //Todo
         //pushData();
-        console.log('Loaded data');
+        
         ev.target.complete();
   
         // App logic to determine if all data is loaded
@@ -166,57 +170,8 @@ export default defineComponent({
       }, 500);
     }
 
-    
-    
-    //pushData();
-    
-
     const selectedIndex = ref(0);
-    const appPages = [
-      {
-        title: 'Inbox',
-        url: '/folder/Inbox',
-        iosIcon: mailOutline,
-        mdIcon: mailSharp
-      },
-      {
-        title: 'Outbox',
-        url: '/folder/Outbox',
-        iosIcon: paperPlaneOutline,
-        mdIcon: paperPlaneSharp
-      },
-      {
-        title: 'Favorites',
-        url: '/folder/Favorites',
-        iosIcon: heartOutline,
-        mdIcon: heartSharp
-      },
-      {
-        title: 'Archived',
-        url: '/folder/Archived',
-        iosIcon: archiveOutline,
-        mdIcon: archiveSharp
-      },
-      {
-        title: 'Trash',
-        url: '/folder/Trash',
-        iosIcon: trashOutline,
-        mdIcon: trashSharp
-      },
-      {
-        title: 'Spam',
-        url: '/folder/Spam',
-        iosIcon: warningOutline,
-        mdIcon: warningSharp
-      }
-    ];
-    const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-    
-    const path = window.location.pathname.split('folder/')[1];
-    if (path !== undefined) {
-      selectedIndex.value = appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-    }
-    
+    //const path = window.location.pathname.split('folder/')[1];
     const route = useRoute();
    
 
@@ -224,8 +179,6 @@ export default defineComponent({
     
     return { 
       selectedIndex,
-      appPages, 
-      labels,
       archiveOutline, 
       archiveSharp, 
       bookmarkOutline, 
@@ -243,6 +196,7 @@ export default defineComponent({
       isDisabled,
       toggleInfiniteScroll,
       loadData,
+      aantalFavo,
       items,
       heart,
       isSelected: (url: string) => url === route.path ? 'selected' : ''
@@ -251,6 +205,46 @@ export default defineComponent({
 
   
  methods: {
+
+  updatePokemonList(whichList : string){
+    let favos :number[]= this.$cookie.getCookie('favos').split(",");
+      let list = ref<basicPokemon[]>(this.items)
+      //Empty array
+        while (list.value.length) { 
+          list.value.pop();
+        }
+              
+                let response =  axios({
+                  url: 'https://stoplight.io/mocks/appwise-be/pokemon/57519009/pokemon',
+                  method: 'get',
+                  timeout: 8000,
+                 })
+                  .then(data => data.data.forEach(function(pok: basicPokemon){
+                      try{
+                        if(whichList === "favorites"){
+                          favos.forEach(number  => {
+                            
+                                if(number == pok.id){
+                                  list.value.push(pok);
+                                }
+                              }
+                            
+                          )}
+                          else if (whichList === 'all'){
+                              list.value.push(pok);                        
+                            }
+                      }
+                      catch(err){
+                        //todo error handling
+                            console.log(err)
+                      }
+                    }))
+                   
+            
+
+          
+        
+  },
 
   
   searchbarPokemon(val: any, e:any){
@@ -262,15 +256,15 @@ export default defineComponent({
     console.log(".")
   
   },
-    getPokemon(id: number){
+    /*getPokemon(id: number){
    
       //this.retreivePokemon(id).then(res => console.log(res))
       this.retreivePokemon(id).then(function(pok: Pokedex){
           console.log(pok.name);
       })
   
-    },
-
+    },*/
+/*
     async retreivePokemon(id: number) {
           try {
             let res = await axios({
@@ -295,7 +289,7 @@ export default defineComponent({
         console.error(err);
     }
          
-    },
+    },*/
 
    
 
