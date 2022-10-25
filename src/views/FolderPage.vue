@@ -133,7 +133,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router'
-import { IonButtons, IonContent, IonIcon, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { heartOutline, heartSharp,heart } from 'ionicons/icons';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -155,58 +155,23 @@ export default defineComponent({
     IonTitle,
     IonToolbar
   },
-  created() {
-  
-    this.$watch(
-      () => this.$route.params,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (toParams :any) => {
-      //  this.getPokemonDetails(toParams.name);
-        /*if(!isNaN(toParams.name)){
-        //retreivePokemon(toParams);
-        this.getPokemonDetails(toParams.name);
-        
-
-        }else if (toParams.name === ""){
-          // no poke served. id == 1
-          this.getPokemonDetails(1);
-          console.log("no name given")
-          
-        }
-        else{
-          // if name in route
-          this.getPokemonDetails(toParams.name);
-          
-          
-        }*/
-      }
-      
-    )
-    
-  },
   methods: {
-
-    
-
      randomKey() {
          return (new Date()).getTime() + Math.floor(Math.random() * 10000).toString()
     },
 
     //cookies with favo's
     likePokemon(id: number){
-    //this.$cookie.removeCookie('favos');
     //not liked
       if(!this.isLiked){
         var favos :number[];
-        console.log(this.$cookie.isCookieAvailable('favos'))
 
         //if cookie exists
         if(this.$cookie.isCookieAvailable('favos')){
-          
-          favos = this.$cookie.getCookie('favos').split(",");
-
-        favos.push(id);
-        }else{
+          favos = this.$cookie.getCookie('favos').split(","); 
+          favos.push(id);
+        }
+        else{
           favos = [id]
         }
         
@@ -227,29 +192,6 @@ export default defineComponent({
       this.$cookie.setCookie('favos', favos.toString());
       this.isLiked = !this.isLiked;
     },
-    
-    /*getPokemonDetails (name: any){
-      try {
-            axios.get('https://pokeapi.co/api/v2/pokemon/' + name,{
-              headers: {
-                'Content-Type': 'application/json',
-            }
-            }).then(resp => {
-
-            //console.log(resp.data);
-            //const pok: Pokedex = resp.data;
-           // this.pokemon = resp.data;
-            
-            return resp.data;
-
-            });
-             } 
-              catch (err) {
-                  console.error(err);
-                  //todo error
-                           
-              }
-    },*/
   },
 
   setup(){
