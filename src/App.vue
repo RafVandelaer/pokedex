@@ -15,7 +15,7 @@
               <ion-card color="tertiary" @click="updatePokemonList('all')">
                 <ion-card-header>
                   <ion-card-title>All</ion-card-title>
-                  <ion-card-subtitle>150 Pokemon</ion-card-subtitle>
+                  <ion-card-subtitle>1st Gen</ion-card-subtitle>
                 </ion-card-header>         
               </ion-card>
             </ion-col>
@@ -23,7 +23,7 @@
               <ion-card @click="updatePokemonList('favorites')" color="success">
                 <ion-card-header>
                   <ion-card-title>Favorieten</ion-card-title>
-                  <ion-card-subtitle>{{aantalFavo}} Pokemon</ion-card-subtitle>
+                  <ion-card-subtitle>Jouw pokémon</ion-card-subtitle>
                 </ion-card-header>         
               </ion-card>
             </ion-col>
