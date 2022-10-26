@@ -211,7 +211,13 @@ export default defineComponent({
  methods: {
 
   updatePokemonList(whichList : string){
-    let favos :number[]= this.$cookie.getCookie('favos').split(",");
+    let favos :number[];
+    if(this.$cookie.isCookieAvailable('favos')){
+      favos= this.$cookie.getCookie('favos').split(",");
+    }
+    else{
+      favos = []
+    }
       let list = ref<basicPokemon[]>(this.items)
       //Empty array
         while (list.value.length) { 
