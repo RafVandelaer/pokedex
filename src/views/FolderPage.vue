@@ -35,7 +35,7 @@
           <ion-col >
             
             <div class="height" v-for="pok in pokeDetail" :key="pok.id">
-              
+           
               <img class="frontSprite height vertical-align" :alt="pok.name" :src="pok.sprites.front_default" />
             
               
@@ -133,11 +133,12 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router'
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import { heartOutline, heart } from 'ionicons/icons';
+import { IonButtons, IonContent, IonIcon, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { heartOutline, heartSharp,heart } from 'ionicons/icons';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { useCookie } from 'vue-cookie-next'
+import Vue from 'vue'
 
 import {Pokedex } from '../ts/detailedPokemon';
 import axios from 'axios';
@@ -155,6 +156,7 @@ export default defineComponent({
     IonToolbar
   },
   methods: {
+
      randomKey() {
          return (new Date()).getTime() + Math.floor(Math.random() * 10000).toString()
     },
@@ -164,32 +166,34 @@ export default defineComponent({
     //not liked
       if(!this.isLiked){
         var favos :number[];
+        console.log(this.$cookie.isCookieAvailable('favos'))
 
         //if cookie exists
         if(this.$cookie.isCookieAvailable('favos')){
-          favos = this.$cookie.getCookie('favos').split(","); 
-          favos.push(id);
-        }
-        else{
+          
+          favos = this.$cookie.getCookie('favos').split(",");
+
+        favos.push(id);
+        }else{
           favos = [id]
         }
         
       }
       //is liked, unlike
       else{
-        
         favos = this.$cookie.getCookie('favos').split(",");
         //search ID, delete
-        favos.forEach(number => {
+        favos.forEach(function(number, index) {
           //console.log(number + " " + id);
            if(number == id){
-            console.log(number)
-            favos.splice(number-1,1)
+            console.log('removed:' + id + "  index: " + index); 
+            favos.splice(index,1)
            }
         });
         
 
       }
+      console.log(favos.toString())
       this.$cookie.setCookie('favos', favos.toString());
       this.isLiked = !this.isLiked;
     },
@@ -261,7 +265,6 @@ export default defineComponent({
   },
   data(){
       return{
-       
       }
   }, 
   
