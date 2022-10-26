@@ -184,9 +184,7 @@ export default defineComponent({
         favos = this.$cookie.getCookie('favos').split(",");
         //search ID, delete
         favos.forEach(function(number, index) {
-          //console.log(number + " " + id);
            if(number == id){
-            console.log('removed:' + id + "  index: " + index); 
             favos.splice(index,1)
            }
         });
@@ -205,11 +203,9 @@ export default defineComponent({
     const heartIcon = 'heartOutline';
 
     var isLiked = ref(false);
-   // let pokemon = ref<Pokedex>();
+
    console.log(route.params);
 
-  //let pokemon :Pokedex = {name: 'test'};
-  //const pokeDetail = ref<Pokedex[]>([]);
     const pokeDetail = ref<Pokedex[]>([]);
     
   getDetailedPokemon().then(function(res: Pokedex){
@@ -225,9 +221,7 @@ export default defineComponent({
            }
         });
 
-      //console.log(res)
   });
-  //console.log(pokemon);
 
   async function getDetailedPokemon() {
     // 👇️ const data: GetUsersResponse
